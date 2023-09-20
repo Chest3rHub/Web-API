@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/RESTAPI1.props" />
+</Project>
