@@ -57,32 +57,32 @@ public partial class _TravelDbContext : DbContext
                 .HasConstraintName("Table_5_Trip");
         });
 
- //   modelBuilder.Entity<Country>(entity =>
-   //     {
-     //       entity.HasKey(e => e.IdCountry).HasName("Country_pk");
-//
-  //          entity.ToTable("Country");
-//
-  //          entity.Property(e => e.IdCountry).ValueGeneratedNever();
-    //        entity.Property(e => e.Name).HasMaxLength(120);
-//
-  //          entity.HasMany(d => d.CountryTrips).WithMany(p => p.Country)
-    //            .UsingEntity<Dictionary<string, object>>(
-      //              "CountryTrip",
-        //            r => r.HasOne<Trip>().WithMany()
-          //              .HasForeignKey("IdTrip")
-            //            .OnDelete(DeleteBehavior.ClientSetNull)
-              //          .HasConstraintName("Country_Trip_Trip"),
-                //    l => l.HasOne<Country>().WithMany()
-                  //      .HasForeignKey("IdCountry")
-                    //    .OnDelete(DeleteBehavior.ClientSetNull)
-                      //  .HasConstraintName("Country_Trip_Country"),
-            //        j =>
-              //      {
-                //        j.HasKey("IdCountry", "IdTrip").HasName("Country_Trip_pk");
-                  //      j.ToTable("Country_Trip");
-               //     });
-     //   });
+        modelBuilder.Entity<Country>(entity =>
+        {
+            entity.HasKey(e => e.IdCountry).HasName("Country_pk");
+
+            entity.ToTable("Country");
+
+            entity.Property(e => e.IdCountry).ValueGeneratedNever();
+            entity.Property(e => e.Name).HasMaxLength(120);
+
+            entity.HasMany(d => d.IdTrips).WithMany(p => p.IdCountries)
+                .UsingEntity<Dictionary<string, object>>(
+                    "CountryTrip",
+                    r => r.HasOne<Trip>().WithMany()
+                        .HasForeignKey("IdTrip")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("Country_Trip_Trip"),
+                    l => l.HasOne<Country>().WithMany()
+                        .HasForeignKey("IdCountry")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("Country_Trip_Country"),
+                    j =>
+                    {
+                        j.HasKey("IdCountry", "IdTrip").HasName("Country_Trip_pk");
+                        j.ToTable("Country_Trip");
+                    });
+        });
 
         modelBuilder.Entity<Trip>(entity =>
         {
@@ -101,4 +101,5 @@ public partial class _TravelDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-}
+    }
+    
