@@ -16,10 +16,9 @@ public class TripDbService : ITripDbService
         return await _context.Trips
             .OrderByDescending(x => x.DateFrom)
             .Include(x => x.ClientTrips)
-            .ThenInclude(ct => ct.Client)
-            .Include(x => x.CountryTrips)
-            .Select(x => new TripDTO(x.Name, x.Description, x.DateFrom, x.DateTo, x.MaxPeople, x.ClientTrips, ////))
+            .ThenInclude(ct => ct.IdClient)
+            .Include(x => x.IdCountries)
+            .Select(x => new TripDTO(x.Name, x.Description, x.DateFrom, x.DateTo, x.MaxPeople, x.ClientTrips, x.IdCountries))
             .ToListAsync(cancellationToken);
-
     }
 }

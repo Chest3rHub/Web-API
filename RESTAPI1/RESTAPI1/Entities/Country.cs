@@ -6,5 +6,5 @@ public class Country
     
     public string Name { get; set; }
     
-    public virtual ICollection<Country_Trip> CountryTrips { get; set; } = new List<Country_Trip>();
+    public virtual ICollection<Trip> IdTrips { get; set; } = new List<Trip>();
 }

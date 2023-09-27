@@ -16,7 +16,7 @@ public class Trip
 
     public int MaxPeople { get; set; }
 
-    public virtual ICollection<Country_Trip> CountryTrips { get; set; } = new List<Country_Trip>();
+    public virtual ICollection<Country> IdCountries { get; set; } = new List<Country>();
 
     public virtual ICollection<Client_Trip> ClientTrips { get; set; } = new List<Client_Trip>();
     
