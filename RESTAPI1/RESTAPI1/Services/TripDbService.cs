@@ -46,13 +46,6 @@ public class TripDbService : ITripDbService
    
    public async Task<bool> AddClientToTripAsync(ClientTripDTO clientTrip)
    {
-       var trip = _context.Trips.FirstOrDefault(t => t.IdTrip == clientTrip.IdTrip);
-
-       if (trip == null) 
-       { 
-           throw new Exception("Taka wycieczka nie istnieje"); 
-       }
-
        var existingClient = _context.Clients.FirstOrDefault(c => c.Pesel == clientTrip.Pesel);
 
        if (existingClient == null)
@@ -72,6 +65,17 @@ public class TripDbService : ITripDbService
 
            existingClient = newClient;
        }
+       
+
+       var trip = _context.Trips.FirstOrDefault(t => t.IdTrip == clientTrip.IdTrip);
+
+       if (trip == null) 
+       { 
+           throw new Exception("Taka wycieczka nie istnieje"); 
+       }
+       
+
+       
 
        bool isClientAssigned = _context.ClientTrips.Any(ct => ct.IdClient == existingClient.IdClient && ct.IdTrip == clientTrip.IdTrip);
 
