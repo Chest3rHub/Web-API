@@ -43,4 +43,54 @@ public class TripDbService : ITripDbService
 
        return true;
    }
+   
+   public async Task<bool> AddClientToTripAsync(ClientTripDTO clientTrip)
+   {
+       var trip = _context.Trips.FirstOrDefault(t => t.IdTrip == clientTrip.IdTrip);
+
+       if (trip == null) 
+       { 
+           throw new Exception("Taka wycieczka nie istnieje"); 
+       }
+
+       var existingClient = _context.Clients.FirstOrDefault(c => c.Pesel == clientTrip.Pesel);
+
+       if (existingClient == null)
+       {
+           var newClient = new Client
+           {
+               IdClient = _context.Clients.Max(cl => cl.IdClient) + 1,
+               FirstName = clientTrip.FirstName,
+               LastName = clientTrip.LastName,
+               Email = clientTrip.Email,
+               Telephone = clientTrip.Telephone,
+               Pesel = clientTrip.Pesel
+           };
+
+           _context.Clients.Add(newClient);
+           _context.SaveChanges();
+
+           existingClient = newClient;
+       }
+
+       bool isClientAssigned = _context.ClientTrips.Any(ct => ct.IdClient == existingClient.IdClient && ct.IdTrip == clientTrip.IdTrip);
+
+       if (isClientAssigned)
+       {
+           throw new Exception("Klient jest już zapisany na ta wycieczke");
+       }
+
+       var assignClient = new Client_Trip
+       {
+           IdClient = existingClient.IdClient,
+           IdTrip = clientTrip.IdTrip,
+           RegisteredAt = DateTime.Now,
+           PaymentDate = clientTrip.PaymentDate
+       };
+
+       _context.ClientTrips.Add(assignClient);
+       _context.SaveChanges();
+
+       return true;
+   }
 }

@@ -21,4 +21,19 @@ public class TripsController : ControllerBase
         IList<TripDTO> trips = await _tripDbService.GetTripsListAsync(cancellationToken);
         return Ok(trips);
     }
+    
+    [HttpPost("/api/trips/{idTrip}/clients")]
+    public async Task<IActionResult> AssignClient(ClientTripDTO clientTrip)
+    {
+        try
+        {
+            bool result = await _tripDbService.AddClientToTripAsync(clientTrip);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        return Ok("Dodano klienta do wycieczki");
+    }
 }
